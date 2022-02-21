@@ -31,7 +31,7 @@ class Env:
                 self.generate_sequence_work(self.pa.simu_len * self.pa.num_ex)
 
             self.workload = np.zeros(pa.num_res)
-            for i in xrange(pa.num_res):
+            for i in range(pa.num_res):
                 self.workload[i] = \
                     np.sum(self.nw_size_seqs[:, i] * self.nw_len_seqs) / \
                     float(pa.res_slot) / \
@@ -80,27 +80,27 @@ class Env:
 
             backlog_width = int(math.ceil(self.pa.backlog_size / float(self.pa.time_horizon)))
 
-            image_repr = np.zeros((self.pa.network_input_height, self.pa.network_input_width))
+            image_repr = np.zeros((int(self.pa.network_input_height), int(self.pa.network_input_width)))
 
             ir_pt = 0
 
-            for i in xrange(self.pa.num_res):
+            for i in range(self.pa.num_res):
 
                 image_repr[:, ir_pt: ir_pt + self.pa.res_slot] = self.machine.canvas[i, :, :]
                 ir_pt += self.pa.res_slot
 
-                for j in xrange(self.pa.num_nw):
+                for j in range(self.pa.num_nw):
 
                     if self.job_slot.slot[j] is not None:  # fill in a block of work
                         image_repr[: self.job_slot.slot[j].len, ir_pt: ir_pt + self.job_slot.slot[j].res_vec[i]] = 1
 
                     ir_pt += self.pa.max_job_size
 
-            image_repr[: self.job_backlog.curr_size / backlog_width,
-                       ir_pt: ir_pt + backlog_width] = 1
+            image_repr[: int(self.job_backlog.curr_size / backlog_width),
+                       int(ir_pt): int(ir_pt + backlog_width)] = 1
             if self.job_backlog.curr_size % backlog_width > 0:
-                image_repr[self.job_backlog.curr_size / backlog_width,
-                           ir_pt: ir_pt + self.job_backlog.curr_size % backlog_width] = 1
+                image_repr[int(self.job_backlog.curr_size / backlog_width),
+                           int(ir_pt): int(ir_pt + self.job_backlog.curr_size) % backlog_width] = 1
             ir_pt += backlog_width
 
             image_repr[:, ir_pt: ir_pt + 1] = self.extra_info.time_since_last_new_job / \
@@ -160,7 +160,7 @@ class Env:
 
         skip_row = 0
 
-        for i in xrange(self.pa.num_res):
+        for i in range(self.pa.num_res):
 
             plt.subplot(self.pa.num_res,
                         1 + self.pa.num_nw + 1,  # first +1 for current work, last +1 for backlog queue
@@ -168,7 +168,7 @@ class Env:
 
             plt.imshow(self.machine.canvas[i, :, :], interpolation='nearest', vmax=1)
 
-            for j in xrange(self.pa.num_nw):
+            for j in range(self.pa.num_nw):
 
                 job_slot = np.zeros((self.pa.time_horizon, self.pa.max_job_size))
                 if self.job_slot.slot[j] is not None:  # fill in a block of work
@@ -187,8 +187,8 @@ class Env:
         backlog_width = int(math.ceil(self.pa.backlog_size / float(self.pa.time_horizon)))
         backlog = np.zeros((self.pa.time_horizon, backlog_width))
 
-        backlog[: self.job_backlog.curr_size / backlog_width, : backlog_width] = 1
-        backlog[self.job_backlog.curr_size / backlog_width, : self.job_backlog.curr_size % backlog_width] = 1
+        backlog[: int(self.job_backlog.curr_size / backlog_width), : int(backlog_width)] = 1
+        backlog[int(self.job_backlog.curr_size / backlog_width), : int(self.job_backlog.curr_size % backlog_width)] = 1
 
         plt.subplot(self.pa.num_res,
                     1 + self.pa.num_nw + 1,  # first +1 for current work, last +1 for backlog queue
@@ -228,7 +228,6 @@ class Env:
     def step(self, a, repeat=False):
 
         status = None
-
         done = False
         reward = 0
         info = None
@@ -272,7 +271,7 @@ class Env:
                     if new_job.len > 0:  # a new job comes
 
                         to_backlog = True
-                        for i in xrange(self.pa.num_nw):
+                        for i in range(self.pa.num_nw):
                             if self.job_slot.slot[i] is None:  # put in new visible job slots
                                 self.job_slot.slot[i] = new_job
                                 self.job_record.record[new_job.id] = new_job
@@ -379,7 +378,7 @@ class Machine:
 
         allocated = False
 
-        for t in xrange(0, self.time_horizon - job.len):
+        for t in range(0, self.time_horizon - job.len):
 
             new_avbl_res = self.avbl_slot[t: t + job.len, :] - job.res_vec
 
@@ -408,7 +407,7 @@ class Machine:
                 canvas_start_time = job.start_time - curr_time
                 canvas_end_time = job.finish_time - curr_time
 
-                for res in xrange(self.num_res):
+                for res in range(self.num_res):
                     for i in range(canvas_start_time, canvas_end_time):
                         avbl_slot = np.where(self.canvas[res, i, :] == 0)[0]
                         self.canvas[res, i, avbl_slot[: job.res_vec[res]]] = new_color
@@ -459,7 +458,7 @@ def test_backlog():
     pa.new_job_rate = 1
     pa.compute_dependent_parameters()
 
-    env = Env(pa, render=False, repre='image')
+    env = Env(pa, render=True, repre='image')
 
     env.step(5)
     env.step(5)
@@ -470,7 +469,7 @@ def test_backlog():
     env.step(5)
     assert env.job_backlog.backlog[0] is not None
     assert env.job_backlog.backlog[1] is None
-    print "New job is backlogged."
+    print ("New job is backlogged.")
 
     env.step(5)
     env.step(5)
@@ -499,7 +498,7 @@ def test_backlog():
     env.step(3)
     assert env.job_slot.slot[3] == job
 
-    print "- Backlog test passed -"
+    print ("- Backlog test passed -")
 
 
 def test_compact_speed():
@@ -516,11 +515,11 @@ def test_compact_speed():
     import time
 
     start_time = time.time()
-    for i in xrange(100000):
+    for i in range(100000):
         a = other_agents.get_sjf_action(env.machine, env.job_slot)
         env.step(a)
     end_time = time.time()
-    print "- Elapsed time: ", end_time - start_time, "sec -"
+    print ("- Elapsed time: ", end_time - start_time, "sec -")
 
 
 def test_image_speed():
@@ -537,11 +536,11 @@ def test_image_speed():
     import time
 
     start_time = time.time()
-    for i in xrange(100000):
+    for i in range(100000):
         a = other_agents.get_sjf_action(env.machine, env.job_slot)
         env.step(a)
     end_time = time.time()
-    print "- Elapsed time: ", end_time - start_time, "sec -"
+    print ("- Elapsed time: ", end_time - start_time, "sec -")
 
 
 if __name__ == '__main__':
