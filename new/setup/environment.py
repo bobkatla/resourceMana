@@ -3,7 +3,7 @@ import math
 import matplotlib.pyplot as plt
 import theano
 
-import parameters
+import new.setup.parameters as parameters
 
 
 class Env:

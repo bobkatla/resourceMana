@@ -1,7 +1,7 @@
 import numpy as np
 import math
 
-import job_distribution
+import new.setup.job_distribution as job_distribution
 
 
 class Parameters:
