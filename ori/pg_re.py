@@ -332,7 +332,7 @@ def launch(pa, pg_resume=None, render=False, repre='image', end='no_new_job'):
                 all_adv = np.concatenate([r["all_adv"] for r in result])
 
                 # Do policy gradient update step, using the first agent
-                # put the new parameter in the last 'worker', then propagate the update at the end
+                # put the main parameter in the last 'worker', then propagate the update at the end
                 grads = pg_learners[pa.batch_size].get_grad(all_ob, all_action, all_adv)
 
                 grads_all.append(grads)

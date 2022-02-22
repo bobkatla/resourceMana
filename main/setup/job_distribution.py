@@ -24,7 +24,7 @@ class Dist:
 
     def normal_dist(self):
 
-        # new work duration
+        # main work duration
         nw_len = np.random.randint(1, self.job_len + 1)  # same length in every dimension
 
         nw_size = np.zeros(self.num_res)
@@ -72,7 +72,7 @@ def generate_sequence_work(pa, seed=42):
 
     for i in range(simu_len):
 
-        if np.random.rand() < pa.new_job_rate:  # a new job comes
+        if np.random.rand() < pa.new_job_rate:  # a main job comes
 
             nw_len_seq[i], nw_size_seq[i, :] = nw_dist()
 

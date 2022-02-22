@@ -1,3 +1,5 @@
+# This will be the place to run the input
+
 import os
 # set up for the theano
 os.environ["THEANO_FLAGS"] = "device=cpu,floatX=float32"
@@ -6,11 +8,8 @@ import getopt
 import matplotlib
 matplotlib.use('Agg')
 
-import parameters
+import main.setup.parameters as parameters
 # Each of the file below will run another small launch depends on exp type
-import pg_re
-import pg_su
-import slow_down_cdf
 
 
 def script_usage():
@@ -146,18 +145,8 @@ def main():
     pa.compute_dependent_parameters()
 
     if type_exp == 'pg_su':
-        pg_su.launch(pa, pg_resume, render, repre='image', end='all_done')
-    #     Some files don't exist
-    # elif type_exp == 'v_su':
-    #     v_su.launch(pa, v_resume, render)
-    elif type_exp == 'pg_re':
-        pg_re.launch(pa, pg_resume, render, repre='image', end='all_done')
-    # elif type_exp == 'pg_v_re':
-    #     pg_v_re.launch(pa, pg_resume, v_resume, render)
-    elif type_exp == 'test':
-        slow_down_cdf.launch(pa, pg_resume, render, True)
-    # elif type_exp == 'q_re':
-    #     q_re.launch(pa, q_resume, render)
+        NotImplemented
+
     else:
         print("Error: unkown experiment type " + str(type_exp))
         exit(1)

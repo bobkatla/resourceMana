@@ -1,7 +1,7 @@
 # NOTE: for the issue of BLAS, try this: export THEANO_FLAGS=blas.ldflags='-lgfortran'
 
 # There will be another file for plotting the results
-# This will be the launcher, we will input a system that can get the prob for the action
+# This will be the place to run the RL training
 
 import numpy as np
 
@@ -50,6 +50,8 @@ def get_traj(agent, env, episode_max_length):
             'info': info
             }
 
+def launch():
+    NotImplemented
 
 if __name__ == '__main__':
     NotImplemented

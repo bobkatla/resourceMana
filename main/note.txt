@@ -1,0 +1,14 @@
+This will be the place I write down what exactly I need to do
+
+The goal
+- Setup standard env for the resource management
+- Can just input the action deciser (caculate the probability). E.g: Q-learning, SARSA
+- Plotting the needed graph (how to get the needed data to compare)
+
+Struct:
+- The setup will setup the env for training/ testing
+- The re_algo to store the algo for training, return model/agent
+- The decider will to store the agents, return the action will take (which task will be executed)
+- The plot will store how to plot
+- launcher file will be the place user input what they wanna do (the only endpoint)
+- We will need some way to store all the data (outside file such as numpy file)

@@ -22,21 +22,21 @@ class Parameters:
         self.num_nw = 5                # maximum allowed number of work in the queue
 
         self.time_horizon = 20         # number of time steps in the graph
-        self.max_job_len = 15          # maximum duration of new jobs
+        self.max_job_len = 15          # maximum duration of main jobs
         self.res_slot = 10             # maximum number of available resource slots
-        self.max_job_size = 10         # maximum resource request of new work
+        self.max_job_size = 10         # maximum resource request of main work
 
         self.backlog_size = 60         # backlog queue size
 
-        self.max_track_since_new = 10  # track how many time steps since last new jobs
+        self.max_track_since_new = 10  # track how many time steps since last main jobs
 
         self.job_num_cap = 40          # maximum number of distinct colors in current work graph
 
-        self.new_job_rate = 0.7        # lambda in new job arrival Poisson Process
+        self.new_job_rate = 0.7        # lambda in main job arrival Poisson Process
 
         self.discount = 1           # discount factor
 
-        # distribution for new job arrival
+        # distribution for main job arrival
         self.dist = job_distribution.Dist(self.num_res, self.max_job_size, self.max_job_len)
 
         # graphical representation
@@ -47,7 +47,7 @@ class Parameters:
             (self.res_slot +
              self.max_job_size * self.num_nw) * self.num_res + \
             self.backlog_width + \
-            1  # for extra info, 1) time since last new job
+            1  # for extra info, 1) time since last main job
 
         # compact representation
         self.network_compact_dim = (self.num_res + 1) * \
@@ -56,7 +56,7 @@ class Parameters:
         self.network_output_dim = self.num_nw + 1  # + 1 for void action
 
         self.delay_penalty = -1       # penalty for delaying things in the current work screen
-        self.hold_penalty = -1        # penalty for holding things in the new work screen
+        self.hold_penalty = -1        # penalty for holding things in the main work screen
         self.dismiss_penalty = -1     # penalty for missing a job because the queue is full
 
         self.num_frames = 1           # number of frames to combine and process
@@ -78,7 +78,7 @@ class Parameters:
             (self.res_slot +
              self.max_job_size * self.num_nw) * self.num_res + \
             self.backlog_width + \
-            1  # for extra info, 1) time since last new job
+            1  # for extra info, 1) time since last main job
 
         # compact representation
         self.network_compact_dim = (self.num_res + 1) * \
