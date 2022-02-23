@@ -10,10 +10,12 @@ import mkl
 from multiprocessing import Process
 from multiprocessing import Manager
 
-import environment
-import job_distribution
-import pg_network
-import slow_down_cdf
+import main.setup.environment as environment
+import main.setup.job_distribution as job_distribution
+import main.re_algo.pg.pg_network as pg_network
+import main.setup.parameters as parameters
+import main.plot_all as slow_down_cdf
+
 from cycler import cycler
 
 # RSM =  Response Surface Methodology
@@ -385,8 +387,8 @@ def launch(pa, pg_resume=None, render=False, repre='image', end='no_new_job'):
             param_file.close()
 
             pa.unseen = True
-            slow_down_cdf.launch(pa, pa.output_filename + '_' + str(iteration) + '.pkl',
-                                 render=False, plot=True, repre=repre, end=end)
+            # slow_down_cdf.launch(pa, pa.output_filename + '_' + str(iteration) + '.pkl',
+            #                      render=False, plot=True, repre=repre, end=end)
             pa.unseen = False
             # test on unseen examples
 
@@ -396,9 +398,6 @@ def launch(pa, pg_resume=None, render=False, repre='image', end='no_new_job'):
 
 
 def main():
-
-    import parameters
-
     pa = parameters.Parameters()
 
     pa.simu_len = 50  # 1000

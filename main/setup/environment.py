@@ -379,9 +379,9 @@ class Machine:
         allocated = False
 
         for t in range(0, self.time_horizon - job.len):
-
+            #  defo multi dimen
             new_avbl_res = self.avbl_slot[t: t + job.len, :] - job.res_vec
-
+            # check whether any of ele is neg, which means not allo (the code is bad)
             if np.all(new_avbl_res[:] >= 0):
 
                 allocated = True

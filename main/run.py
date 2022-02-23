@@ -1,4 +1,5 @@
 # This will be the place to run the input
+# Still need to do work here
 
 import os
 # set up for the theano
@@ -9,6 +10,7 @@ import matplotlib
 matplotlib.use('Agg')
 
 import main.setup.parameters as parameters
+import main.re_algo.pg.pg_re as pg_re
 # Each of the file below will run another small launch depends on exp type
 
 
@@ -144,8 +146,8 @@ def main():
 
     pa.compute_dependent_parameters()
 
-    if type_exp == 'pg_su':
-        NotImplemented
+    if type_exp == 'pg_re':
+        pg_re.launch(pa, pg_resume, render, repre='image', end='all_done')
 
     else:
         print("Error: unkown experiment type " + str(type_exp))
